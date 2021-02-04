@@ -7,8 +7,8 @@ app.post('/login', Controller.login)
 app.post('/register', Controller.register)
 
 
-app.post('/googlelogin', Controller.googlelogin)
-app.post('/googleregister', Controller.googleregister)
+app.post('/LoginGoogle', Controller.googlelogin)
+app.post('/RegisterGoogle', Controller.googleregister)
 
 app.use(authenticate)
 app.get('/home', Controller.home)

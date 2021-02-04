@@ -2,10 +2,19 @@ const { User } = require('../models')
 const { comparePassword } = require('../helper/bcrypt')
 const { generateToken } = require('../helper/jwt')
 const { OAuth2Client } = require('google-auth-library')
+const axios = require('axios');
 
 class Controller {
     static home(req, res, next) {
-        res.status(200).json({ msg: 'Success Home' })
+        // res.status(200).json({ msg: 'halo' })
+        console.log('masuk')
+        axios.get('https://api.thecatapi.com/v1/images/search')
+            .then(response => {
+                res.status(201).json(response)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
     }
     static login(req, res, next) {
         const { name, email, password } = req.body
@@ -17,12 +26,12 @@ class Controller {
         })
             .then(found => {
                 if (!found) throw ({
-                    name : 'user not found',
+                    name: 'user not found',
                     message: 'Wrong Email and Password'
                 })
                 const compare = comparePassword(dataUser.password, found.password)
                 if (compare === false) throw ({
-                    name : 'dont have access token',
+                    name: 'dont have access token',
                     message: 'Wrong Email and Password'
                 })
                 const token = generateToken({
@@ -48,7 +57,6 @@ class Controller {
                 res.status(201).json({ success })
             })
             .catch(err => {
-                // res.status(500).json({ err })
                 next(err)
             })
     }
@@ -65,17 +73,19 @@ class Controller {
                 dataGoogleUser.name = payload.name
                 dataGoogleUser.email = payload.email
                 dataGoogleUser.password = process.env.googlePass
+                console.log(dataGoogleUser)
                 return User.create(dataGoogleUser)
             })
             .then(success => {
                 res.status(201).json({ success })
             })
             .catch(err => {
-                res.status(500).json(err)
+                res.status(500).json({ err: 'anjay' })
             })
     }
 
     static googlelogin(req, res, next) {
+        console.log('masuk google login')
         let dataGoogleUser = {}
         const client = new OAuth2Client(process.env.CLIENT_ID);
         client.verifyIdToken({
