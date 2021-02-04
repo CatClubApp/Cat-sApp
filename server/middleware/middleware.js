@@ -1,14 +1,15 @@
-const verify = require('../helper/jwt')
+const { verify } = require('../helper/jwt')
 
-const authenticate = function(req,res,next){
-    try{
-        const token = req.headers.token
-        const decoded = verify(token, process.env.SECRET)
+const authenticate = function (req, res, next) {
+    try {
+        const token = req.headers.access_token
+        const decoded = verify(token, process.env.secret_key)
         req.decoded = decoded
-    }catch (err){
+        next()
+    } catch (err) {
         res.status(401).json({
             message: 'Please Login First'
         })
     }
 }
-module.exports = {authenticate}
+module.exports = { authenticate }
