@@ -16,9 +16,15 @@ class Controller {
             }
         })
             .then(found => {
-                if (!found) throw found
+                if (!found) throw ({
+                    name : 'user not found',
+                    message: 'Wrong Email and Password'
+                })
                 const compare = comparePassword(dataUser.password, found.password)
-                if (compare === false) throw compare
+                if (compare === false) throw ({
+                    name : 'dont have access token',
+                    message: 'Wrong Email and Password'
+                })
                 const token = generateToken({
                     id: found.id,
                     name: found.name,
@@ -28,9 +34,10 @@ class Controller {
                 res.status(201).json({ name: found.name, access_token: token })
             })
             .catch(err => {
-                if (err === null) res.status(404).json({ msg: 'User not found' })
-                if (err === false) res.status(400).json({ msg: 'Email/Password is wrong' })
-                else res.status(500).json(err)
+                // if (err === null) res.status(404).json({ msg: 'User not found' })
+                // if (err === false) res.status(400).json({ msg: 'Email/Password is wrong' })
+                // else res.status(500).json(err)
+                next(err)
             })
     }
     static register(req, res, next) {
@@ -41,7 +48,8 @@ class Controller {
                 res.status(201).json({ success })
             })
             .catch(err => {
-                res.status(500).json({ err })
+                // res.status(500).json({ err })
+                next(err)
             })
     }
 
