@@ -10,5 +10,5 @@ const authenticate = function(req,res,next){
             message: 'Please Login First'
         })
     }
-}
+}  
 module.exports = {authenticate}
