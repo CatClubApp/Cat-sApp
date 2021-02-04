@@ -20,10 +20,13 @@ class Controller {
                 if (compare === false) throw false
                 const token = generateToken({
                     id: found.id,
+                    name: found.name,
                     email: found.email,
                     password: found.password
                 })
-                res.status(201).json({ access_token: token })
+                console.log(found)
+                console.log(token)
+                res.status(201).json({ name: found.name, access_token: token })
             })
             .catch(err => {
                 if (err === null) res.status(404).json({ msg: 'User not found' })
