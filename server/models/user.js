@@ -15,17 +15,43 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-    hooks: {
-      beforeCreate(instance, options) {
-        instance.password = hashPassword(instance.password)
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Please Fill the Name'
+        }
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'Invalid Email Format'
+        },
+        notEmpty: {
+          msg : 'Please Fill The email'
+        }
+      },
+      unique : true
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg : 'Please Fill The Password'
+        }
       }
     }
-  });
-  return User;
+  }, {
+  sequelize,
+  modelName: 'User',
+  hooks: {
+    beforeCreate(instance, options) {
+      instance.password = hashPassword(instance.password)
+    }
+  }
+});
+return User;
 };
