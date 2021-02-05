@@ -177,7 +177,22 @@ class Controller {
             }
         })
             .then(data => {
-                res.status(201).json({ data })
+                res.status(201).json(data)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
+    static deleteFav(req, res) {
+        // res.status(201).json(req.headers)
+        Favorite.destroy({
+            where: {
+                id: req.headers.id
+            }
+        })
+            .then(success => {
+                res.status(200).json({ msg: 'Success Delete' })
             })
             .catch(err => {
                 res.status(500).json(err)
