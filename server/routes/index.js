@@ -14,5 +14,6 @@ app.use(authenticate)
 app.get('/home', Controller.home)
 app.post('/addFav', Controller.addFav)
 app.get('/findFav', Controller.findFav)
+app.delete('/deleteFav', Controller.deleteFav)
 
 module.exports = app

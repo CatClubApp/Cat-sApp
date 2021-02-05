@@ -28,6 +28,11 @@ $(document).ready(() => {
         e.preventDefault();
         favorite()
     })
+    $('#home').on('click', (e) => {
+        e.preventDefault();
+        home()
+    })
+    $("#")
 })
 
 function auth() {
@@ -231,8 +236,46 @@ function favorite() {
     })
         .done(response => {
             console.log(response)
+            $("#card-cat").empty()
+            // for(let i of response){
+            //     console.log(i)
+            // }
+            response.forEach(el => {
+                $("#card-cat").append(
+                    `<img class="card-img-top img-thumbnail" src="${el.data}" alt="Card image cap" style="height : 70%">
+                <div class="card-body" style="background-color:black">
+                  <h1 class="card-title">Cats</h1>
+                  <h5 class="card-text">${el.result}</h5>
+                  <h5 class="card-text">${el.fact}</h5>
+                  <a href="#" class="btn btn-info" id="add-favorite" onclick="deleteFav(${el.id})">Delete</a>
+                </div><br>`
+                )
+            })
         })
         .fail((xhr, text) => {
             console.log(xhr, text)
         })
+}
+
+function home() {
+    auth()
+}
+
+function deleteFav(id) {
+    $.ajax({
+        url: base_url + '/deleteFav',
+        method: 'delete',
+        headers: {
+            access_token: localStorage.getItem("access_token"),
+            id: id
+        }
+    })
+        .done(response => {
+            // console.log(response)
+            favorite()
+        })
+        .fail((xhr, txt) => {
+            console.log(xhr, txt)
+        })
+    console.log('id delete', id)
 }
