@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "0857ABcd",
+    "password": "postgres",
     "database": "CatsApp",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {

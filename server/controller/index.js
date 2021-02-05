@@ -7,14 +7,24 @@ const axios = require('axios');
 class Controller {
     static home(req, res, next) {
         // res.status(200).json({ msg: 'halo' })
-        console.log('masuk')
+       axios.get('https://aws.random.cat/meow')
+       .then(response => {
+           return response.data
+       })
+       .then(data => {
         axios.get('https://api.thecatapi.com/v1/images/search')
-            .then(response => {
-                res.status(201).json(response)
+        .then(cat => {
+            res.status(200).json({
+                data,
+                cat : cat.data[0]
             })
-            .catch(err => {
-                res.status(500).json(err)
-            })
+        })
+       })
+       .catch(err => {
+           console.log(err)
+       })
+
+      
     }
     static login(req, res, next) {
         const { name, email, password } = req.body
@@ -43,6 +53,7 @@ class Controller {
                 res.status(201).json({ name: found.name, access_token: token })
             })
             .catch(err => {
+                //console.log(err)
                 // if (err === null) res.status(404).json({ msg: 'User not found' })
                 // if (err === false) res.status(400).json({ msg: 'Email/Password is wrong' })
                 // else res.status(500).json(err)

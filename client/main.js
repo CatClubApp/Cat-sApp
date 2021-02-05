@@ -43,6 +43,7 @@ function auth() {
         $('#logout').show()
         $('#login').hide()
         $('#register').hide()
+        getApi()
     }
     $('#loginFail').hide()
 }
@@ -136,4 +137,32 @@ function onSignIn(googleUser) {
         .fail(err => {
             console.log(err, "ini error")
         })
+}
+
+function getApi (){
+    $.ajax({
+        url : base_url + '/home',
+        method : "GET",
+        headers : {
+            access_token : localStorage.getItem("access_token")
+        }
+    })
+    .done((response) => {
+        console.log(response)
+        $("#card-cat").empty()
+        $("#card-cat").append(
+            `<img class="card-img-top" src="${response.data.file}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">Cats</h5>
+              <p class="card-text"> MEOW MEOW MEOW </p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>`
+        )
+    })
+    .fail((xhr, text) => {
+        console.log(xhr, text)
+    })
+    .always(() => {
+        console.log('INI DATA KU LHOOOOOO JING')
+    })
 }
