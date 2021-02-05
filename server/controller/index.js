@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Favorite } = require('../models')
 const { comparePassword } = require('../helper/bcrypt')
 const { generateToken } = require('../helper/jwt')
 const { OAuth2Client } = require('google-auth-library')
@@ -151,12 +151,36 @@ class Controller {
                     email: data.email,
                     password: data.password,
                 })
-                res.status(201).json({ name: data.name, access_token: token })
+                res.status(201).json({ id: data.id, name: data.name, access_token: token })
             })
             .catch(err => {
                 if (err === null) res.status(404).json({ msg: 'Data not found' })
                 if (err === false) res.status(400).json({ msg: 'Email/Password is wrong' })
                 else res.status(500).json(err)
+            })
+    }
+    static addFav(req, res) {
+        const { data, result, fact, UserId } = req.body
+        const dataFav = { data, result, fact, UserId }
+        Favorite.create(dataFav)
+            .then(success => {
+                res.status(201).json(success)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+    static findFav(req, res) {
+        Favorite.findAll({
+            where: {
+                UserId: req.headers.userid
+            }
+        })
+            .then(data => {
+                res.status(201).json({ data })
+            })
+            .catch(err => {
+                res.status(500).json(err)
             })
     }
 }

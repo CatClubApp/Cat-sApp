@@ -12,5 +12,7 @@ app.post('/RegisterGoogle', Controller.googleregister)
 
 app.use(authenticate)
 app.get('/home', Controller.home)
+app.post('/addFav', Controller.addFav)
+app.get('/findFav', Controller.findFav)
 
 module.exports = app

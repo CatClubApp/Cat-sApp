@@ -24,6 +24,10 @@ $(document).ready(() => {
         e.preventDefault();
         logout()
     })
+    $('#favorite').on('click', (e) => {
+        e.preventDefault();
+        favorite()
+    })
 })
 
 function auth() {
@@ -35,6 +39,7 @@ function auth() {
         $('#logout').hide()
         $('#login').show()
         $('#register').show()
+        $('#favorite').hide()
     } else {
         $('#login-form').hide()
         $('#register-form').hide()
@@ -43,6 +48,7 @@ function auth() {
         $('#logout').show()
         $('#login').hide()
         $('#register').hide()
+        $('#favorite').show()
         getApi()
     }
     $('#loginFail').hide()
@@ -99,7 +105,7 @@ function login() {
 function logout() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-      console.log('User signed out.');
+        console.log('User signed out.');
     });
     localStorage.clear()
     auth()
@@ -117,7 +123,7 @@ function onSignUp(googleUser) {
         console.log('berhasil masuk')
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
-        console.log('User signed out.');
+            console.log('User signed out.');
         });
         auth()
 
@@ -138,6 +144,7 @@ function onSignIn(googleUser) {
         .done(response => {
             localStorage.setItem('access_token', response.access_token)
             localStorage.setItem('nama', response.name)
+            localStorage.setItem('id', response.id)
             $('#login-email').val('')
             $('#login-password').val('')
             auth()
@@ -147,32 +154,85 @@ function onSignIn(googleUser) {
         })
 }
 
-function getApi (){
+function getApi() {
     $.ajax({
-        url : base_url + '/home',
-        method : "GET",
-        headers : {
-            access_token : localStorage.getItem("access_token")
+        url: base_url + '/home',
+        method: "GET",
+        headers: {
+            access_token: localStorage.getItem("access_token")
         }
     })
-    .done((response) => {
-        console.log(response)
-        $("#card-cat").empty()
-        $("#card-cat").append(
-            `<img class="card-img-top img-thumbnail" src="${response.data}" alt="Card image cap" style="height : 70%">
+        .done((response) => {
+            console.log(response)
+            $("#card-cat").empty()
+            $("#card-cat").append(
+                `<img class="card-img-top img-thumbnail" src="${response.data}" alt="Card image cap" style="height : 70%">
             <div class="card-body">
               <h1 class="card-title">Cats</h1>
               <h5 class="card-text">${response.result}</h5>
               <a href="#" class="btn btn-info" id="random-pict">Random Pict</a>
               <a href="#" class="btn btn-info" id="add-favorite">Add To Favorite</a>
             </div>`
-        )
-        $("#background-web").attr("background", response.fact)
+            )
+            $("#background-web").attr("background", response.fact)
+            $('#random-pict').on('click', (e) => {
+                e.preventDefault()
+                random()
+            })
+            $('#add-favorite').on('click', (e) => {
+                e.preventDefault()
+                addFav(response.data, response.result, response.fact)
+            })
+        })
+        .fail((xhr, text) => {
+            console.log(xhr, text)
+        })
+        .always(() => {
+            console.log('INI DATA KU')
+        })
+}
+
+function random() {
+    console.log('trigger random')
+    getApi()
+}
+
+function addFav(data, result, fact) {
+    $.ajax({
+        url: base_url + '/addFav',
+        method: 'post',
+        data: {
+            data,
+            result,
+            fact,
+            UserId: localStorage.getItem('id')
+        },
+        headers: {
+            access_token: localStorage.getItem("access_token")
+        }
     })
-    .fail((xhr, text) => {
-        console.log(xhr, text)
+        .done(response => {
+            console.log(response)
+        })
+        .fail((xhr, text) => {
+            console.log(xhr, text)
+        })
+}
+
+function favorite() {
+    // console.log('trigger favorite')
+    $.ajax({
+        url: base_url + '/findFav',
+        method: 'get',
+        headers: {
+            access_token: localStorage.getItem("access_token"),
+            UserId: localStorage.getItem('id')
+        }
     })
-    .always(() => {
-        console.log('INI DATA KU')
-    })
+        .done(response => {
+            console.log(response)
+        })
+        .fail((xhr, text) => {
+            console.log(xhr, text)
+        })
 }
