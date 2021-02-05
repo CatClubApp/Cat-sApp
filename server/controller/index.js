@@ -85,7 +85,6 @@ class Controller {
     }
 
     static googlelogin(req, res, next) {
-        console.log('masuk google login')
         let dataGoogleUser = {}
         const client = new OAuth2Client(process.env.CLIENT_ID);
         client.verifyIdToken({
