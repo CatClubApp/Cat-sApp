@@ -6,51 +6,51 @@ const axios = require('axios');
 
 class Controller {
     static home(req, res, next) {
-        
-       axios.get('https://aws.random.cat/meow')
-       .then(response => {
-           return response.data
-       })
-       .then(data => {
-        axios.get('https://api.thecatapi.com/v1/images/search')
-        .then(cat => {
-            return cat.data[0]
-            // res.status(200).json({
-            //     data,
-            //     cat : cat.data[0]
-            // })
-        })
-        .then(fact => {
-            axios.get('https://catfact.ninja/fact?max_length=140')
-            .then(result => {
-                var config = {
-                    method: 'get',
-                    url: 'https://api.thecatapi.com/v1/images/search?format=json',
-                    headers: { 
-                      'Content-Type': 'application/json', 
-                      'x-api-key': process.env.API_KEY
-                    }
-                  };
-                axios(config)
-                .then(api =>{
-                    res.status(200).json({
-                        data : data.file,
-                        fact : api.data[0].url,
-                        result : result.data.fact
-                        // result : result.data,
-                        // api : api.data[0]
+
+        axios.get('https://aws.random.cat/meow')
+            .then(response => {
+                return response.data
+            })
+            .then(data => {
+                axios.get('https://api.thecatapi.com/v1/images/search')
+                    .then(cat => {
+                        return cat.data[0]
+                        // res.status(200).json({
+                        //     data,
+                        //     cat : cat.data[0]
+                        // })
+                    })
+                    .then(fact => {
+                        axios.get('https://catfact.ninja/fact?max_length=140')
+                            .then(result => {
+                                var config = {
+                                    method: 'get',
+                                    url: 'https://api.thecatapi.com/v1/images/search?format=json',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'x-api-key': process.env.API_KEY
+                                    }
+                                };
+                                axios(config)
+                                    .then(api => {
+                                        res.status(200).json({
+                                            data: data.file,
+                                            fact: api.data[0].url,
+                                            result: result.data.fact
+                                            // result : result.data,
+                                            // api : api.data[0]
+                                        })
+
+                                    })
+                            })
                     })
 
-                })
             })
-        })
-        
-       })
-       .catch(err => {
-           console.log(err)
-       })
+            .catch(err => {
+                console.log(err)
+            })
 
-      
+
     }
     static login(req, res, next) {
         const { name, email, password } = req.body
@@ -99,6 +99,7 @@ class Controller {
     }
 
     static googleregister(req, res, next) {
+        console.log('masuk google register')
         let dataGoogleUser = {}
         const client = new OAuth2Client(process.env.CLIENT_ID);
         client.verifyIdToken({
@@ -117,6 +118,7 @@ class Controller {
                 res.status(201).json({ success })
             })
             .catch(err => {
+                console.log(err)
                 res.status(500).json({ err: 'anjay' })
             })
     }
