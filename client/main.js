@@ -97,6 +97,10 @@ function login() {
 }
 
 function logout() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
     localStorage.clear()
     auth()
 }
@@ -112,7 +116,13 @@ function onSignUp(googleUser) {
             googleToken: id_token
         }
     }).done(response => {
+        console.log('berhasil masuk')
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+        console.log('User signed out.');
+        });
         auth()
+
     }).fail((xhr, text) => {
         console.log(xhr, text)
     })
@@ -151,18 +161,20 @@ function getApi (){
         console.log(response)
         $("#card-cat").empty()
         $("#card-cat").append(
-            `<img class="card-img-top" src="${response.data.file}" alt="Card image cap">
+            `<img class="card-img-top img-thumbnail" src="${response.data}" alt="Card image cap" style="height : 70%">
             <div class="card-body">
-              <h5 class="card-title">Cats</h5>
-              <p class="card-text"> MEOW MEOW MEOW </p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <h1 class="card-title">Cats</h1>
+              <h5 class="card-text">${response.result}</h5>
+              <a href="#" class="btn btn-info" id="random-pict">Random Pict</a>
+              <a href="#" class="btn btn-info" id="add-favorite">Add To Favorite</a>
             </div>`
         )
+        $("#background-web").attr("background", response.fact)
     })
     .fail((xhr, text) => {
         console.log(xhr, text)
     })
     .always(() => {
-        console.log('INI DATA KU LHOOOOOO JING')
+        console.log('INI DATA KU')
     })
 }
