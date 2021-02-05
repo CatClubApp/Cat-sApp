@@ -116,7 +116,7 @@ class Controller {
             })
             .then(data => {
                 if (!data) throw data
-                const compare = comparePass(dataGoogleUser.password, data.password)
+                const compare = comparePassword(dataGoogleUser.password, data.password)
                 if (compare === false) throw compare
                 const token = generateToken({
                     id: data.id,
