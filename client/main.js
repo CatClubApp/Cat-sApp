@@ -106,9 +106,7 @@ function logout() {
 }
 
 function onSignUp(googleUser) {
-    console.log('test Masuk')
     var id_token = googleUser.getAuthResponse().id_token;
-    // console.log(id_token)
     $.ajax({
         url: base_url + '/RegisterGoogle',
         method: 'post',
