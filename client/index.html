@@ -10,7 +10,7 @@
 
     <title id="title-web">Cat's App</title>
   </head>
-  <body style="margin :auto;" background="https://media.giphy.com/media/dCLrYGTl75l7WFRJtC/giphy.gif">
+  <body style="margin :auto;" background="https://media.giphy.com/media/dCLrYGTl75l7WFRJtC/giphy.gif" id="background-web">
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg- #FF5733" style="background-color: #FF5733; nav-down: auto;">
         <a class="navbar-brand" href="#">
             <img src="/assets/cattt.gif" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -21,10 +21,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-            <a class="nav-item nav-link" href="#" id="home">Home</a>
-            <a class="nav-item nav-link" href="#" id="login">Login</a>
-            <a class="nav-item nav-link" href="#" id="register">Register</a>
-            <a class="nav-item nav-link" href="#" id="logout">Logout</a>
+            <a class="nav-item nav-link btn btn-dark text-white mr-2" href="#" id="home">Home</a>
+            <a class="nav-item nav-link btn btn-dark text-white mr-2" href="#" id="login">Login</a>
+            <a class="nav-item nav-link btn btn-dark text-white mr-2" href="#" id="register">Register</a>
+            <a class="nav-item nav-link btn btn-dark text-white" href="#" id="logout">Logout</a>
             </div>
         </div>
       </nav><br><br><br>
@@ -35,13 +35,13 @@
             <span class="navbar-toggler-icon"></span>
         </button> -->
         <!-- Card Cat -->
-        <div class="card" style="width: 20rem; height: 30rem; background-color: #5DADE2;" id="card-cat">
+        <div class="card text-white" style="width: 40rem; height: 45rem; background-color: black; margin: auto;" id="card-cat">
             
           </div>
         <!-- End Card Cat -->
         
         <!-- Login Form -->
-        <form style="border: black; margin-left: 600px; margin-right: 600px; border-style: solid; background-color: #E59866;" id="login-form">
+        <form style="border: black; margin-left: 600px; margin-right: 600px; background-color: #E59866;" id="login-form" class="rounded p-2 mt-5 shadow-lg border border-dark">
             <center><h2 style="background-color: #FF5733;">Please Login first</h2></center>
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
@@ -53,7 +53,7 @@
               <input type="password" class="form-control" id="login-password" placeholder="Password">
             </div>
             <center>
-                <button type="submit" class="btn btn-primary">Login</button><br><br>
+                <button type="submit" class="btn btn-dark btn-lg">Login</button><br><br>
             </center>
             <center>
               <div class="g-signin2" data-onsuccess="onSignIn">Sign In</div>

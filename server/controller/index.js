@@ -6,7 +6,7 @@ const axios = require('axios');
 
 class Controller {
     static home(req, res, next) {
-        // res.status(200).json({ msg: 'halo' })
+        
        axios.get('https://aws.random.cat/meow')
        .then(response => {
            return response.data
@@ -14,11 +14,37 @@ class Controller {
        .then(data => {
         axios.get('https://api.thecatapi.com/v1/images/search')
         .then(cat => {
-            res.status(200).json({
-                data,
-                cat : cat.data[0]
+            return cat.data[0]
+            // res.status(200).json({
+            //     data,
+            //     cat : cat.data[0]
+            // })
+        })
+        .then(fact => {
+            axios.get('https://catfact.ninja/fact?max_length=140')
+            .then(result => {
+                var config = {
+                    method: 'get',
+                    url: 'https://api.thecatapi.com/v1/images/search?format=json',
+                    headers: { 
+                      'Content-Type': 'application/json', 
+                      'x-api-key': process.env.API_KEY
+                    }
+                  };
+                axios(config)
+                .then(api =>{
+                    res.status(200).json({
+                        data : data.file,
+                        fact : api.data[0].url,
+                        result : result.data.fact
+                        // result : result.data,
+                        // api : api.data[0]
+                    })
+
+                })
             })
         })
+        
        })
        .catch(err => {
            console.log(err)
