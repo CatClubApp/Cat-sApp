@@ -111,7 +111,6 @@ function onSignUp(googleUser) {
             googleToken: id_token
         }
     }).done(response => {
-        console.log('berhasil masuk')
         auth()
     }).fail((xhr, text) => {
         console.log(xhr, text)
